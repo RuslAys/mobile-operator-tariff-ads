@@ -22,6 +22,25 @@
             </f:facet>
             <h:outputText value="#{tariff.price}" />
         </h:column>
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Options" />
+            </f:facet>
+            <h:dataTable id="tariffOptionsTable" value="#{tariff.options}" var="option">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name" />
+                    </f:facet>
+                    <h:outputText value="#{option.name}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Price" />
+                    </f:facet>
+                    <h:outputText value="#{option.price}" />
+                </h:column>
+            </h:dataTable>
+        </h:column>
     </h:dataTable>
 
     <h:form>
