@@ -29,14 +29,5 @@
             <f:ajax event="updateTariffs" render=":tariffsTable"/>
         </f:websocket>
     </h:form>
-
-    <h:form>
-        <h:commandButton
-                id="sendMessage"
-                action="#{tariffController.update()}"
-                value="Send Message from Input Box">
-            <f:ajax execute="@form" render=":tariffsTable" />
-        </h:commandButton>
-    </h:form>
 </h:body>
 </html>

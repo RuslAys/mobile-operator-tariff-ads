@@ -24,9 +24,6 @@ public class JmsConsumer implements MessageListener {
 
     private Logger logger = LogManager.getLogger(JmsConsumer.class);
 
-//    @Resource(mappedName = "java:/ConnectionFactory")
-//    private ConnectionFactory connectionFactory;
-
     public void onMessage(Message message) {
         TextMessage textMessage = (TextMessage) message;
         try {

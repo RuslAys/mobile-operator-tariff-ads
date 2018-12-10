@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.javaschool.tariffads.dto.TariffPlanDto;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -12,13 +13,14 @@ import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
 @Singleton
 @Lock(LockType.WRITE)
-public class TariffServiceImpl implements TariffService {
+public class TariffServiceImpl implements TariffService, Serializable {
 
     private List<TariffPlanDto> tariffPlans;
     private static ObjectMapper mapper = new ObjectMapper();
@@ -30,16 +32,12 @@ public class TariffServiceImpl implements TariffService {
         HttpURLConnection connection = (HttpURLConnection) urlRequest.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/json");
-//        String base64ClientCredentials = new String(Base64.getEncoder().encodeToString("a:p".getBytes()));
-//        connection.setRequestProperty("Authorization", "Basic " + base64ClientCredentials);
         int code = connection.getResponseCode();
         if(code != 200 ){
-            System.out.println(code);
             throw new IOException("Result code is not OK");
         }
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String response = bufferedReader.readLine();
-        System.out.println("Response = " + response);
         connection.disconnect();
         return response;
     }
@@ -54,6 +52,11 @@ public class TariffServiceImpl implements TariffService {
         }
     }
 
+    @PostConstruct
+    private void uploadTariffPlans(){
+        tariffPlans = fetchTariffs();
+    }
+
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
@@ -63,8 +66,6 @@ public class TariffServiceImpl implements TariffService {
     @Override
     public List<TariffPlanDto> getAllTariffs() {
         if(tariffPlans == null){
-//            List<TariffPlanDto> tariffPlanDtos = fetchTariffs();
-//            pcs.firePropertyChange("tariffPlans", this.tariffPlans, tariffPlanDtos);
             tariffPlans = fetchTariffs();
         }
         return tariffPlans;

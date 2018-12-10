@@ -25,20 +25,10 @@ public class TariffController implements Serializable {
 
     @PostConstruct
     public void init(){
-        tariffService.addPropertyChangeListener((PropertyChangeEvent e)->{
-            System.out.println("Old value " + e.getOldValue());
-            System.out.println("New value " + e.getNewValue());
-            tariffChanel.send("updateTariffs");
-            System.out.println("Pushed");
-            System.out.println("New tariffs " + tariffService.getAllTariffs());
-        });
+        tariffService.addPropertyChangeListener((PropertyChangeEvent e)-> tariffChanel.send("updateTariffs"));
     }
 
     public List<TariffPlanDto> getTariffs(){
         return tariffService.getAllTariffs();
-    }
-
-    public void update(){
-        tariffChanel.send("updateTariffs");
     }
 }
