@@ -4,48 +4,60 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>Hot tariffs</title>
+    <title>Tariffs</title>
+    <link type="text/css" rel="stylesheet" href="resources/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="resources/css/tariffs_table.css"/>
 </h:head>
 <h:body>
-    <h:dataTable id="tariffsTable" value="#{tariffController.getTariffs()}" var="tariff">
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Name" />
-            </f:facet>
-            <h:outputText value="#{tariff.name}" />
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Price" />
-            </f:facet>
-            <h:outputText value="#{tariff.price}" />
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <h:outputText value="Options" />
-            </f:facet>
-            <h:dataTable id="tariffOptionsTable" value="#{tariff.options}" var="option">
-                <h:column>
+
+    <div class="container">
+        <div class="row">
+            <p:dataTable id="tariffs" value="#{tariffController.getTariffs()}" var="tariff"
+                         styleClass="tariffsTable">
+                <f:facet name="header" styleClass="table-header">
+                    Available tariffs
+                </f:facet>
+                <p:column>
                     <f:facet name="header">
                         <h:outputText value="Name" />
                     </f:facet>
-                    <h:outputText value="#{option.name}" />
-                </h:column>
-                <h:column>
+                    <h:outputText value="#{tariff.name}" />
+                </p:column>
+                <p:column>
                     <f:facet name="header">
                         <h:outputText value="Price" />
                     </f:facet>
-                    <h:outputText value="#{option.price}" />
-                </h:column>
-            </h:dataTable>
-        </h:column>
-    </h:dataTable>
+                    <h:outputText value="#{tariff.price}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Options" />
+                    </f:facet>
+                    <p:dataTable id="tariffOptionsTable" value="#{tariff.options}" var="option">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Name" />
+                            </f:facet>
+                            <h:outputText value="#{option.name}" />
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Price" />
+                            </f:facet>
+                            <h:outputText value="#{option.price}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </div>
 
     <h:form>
-        <f:websocket channel="tariffChanel" onmessage="function(m){console.log(m);}">
-            <f:ajax event="updateTariffs" render=":tariffsTable"/>
+        <f:websocket channel="tariffChanel">
+            <f:ajax event="updateTariffs" render=":tariffs"/>
         </f:websocket>
     </h:form>
 </h:body>

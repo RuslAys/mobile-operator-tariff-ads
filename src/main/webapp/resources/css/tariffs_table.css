@@ -1,0 +1,20 @@
+.tariffsTable tr {
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+}
+
+.table-header {
+    color: red;
+}
+
+.tariffsTable tr.trip-active td:nth-child(6) i {
+    color: #30e200;
+}
+
+.tariffsTable tr.trip-late td:nth-child(6) i {
+    color: orange;
+}
+
+.tariffsTable tr.trip-cancelled td:nth-child(6) i {
+    color: red;
+}

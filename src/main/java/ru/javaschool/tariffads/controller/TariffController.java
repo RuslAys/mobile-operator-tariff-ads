@@ -9,7 +9,6 @@ import javax.faces.push.Push;
 import javax.faces.push.PushContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class TariffController implements Serializable {
 
     @PostConstruct
     public void init(){
-        tariffService.addPropertyChangeListener((PropertyChangeEvent e)-> tariffChanel.send("updateTariffs"));
+        tariffService.addPropertyChangeListener(e -> tariffChanel.send("updateTariffs"));
     }
 
     public List<TariffPlanDto> getTariffs(){
