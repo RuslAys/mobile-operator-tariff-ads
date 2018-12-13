@@ -1,7 +1,6 @@
 package ru.javaschool.tariffads.jms;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import ru.javaschool.tariffads.service.TariffService;
 
 import javax.ejb.ActivationConfigProperty;
@@ -22,16 +21,18 @@ public class JmsConsumer implements MessageListener {
     @Inject
     private TariffService tariffService;
 
-    private Logger logger = LogManager.getLogger(JmsConsumer.class);
+    private Logger logger = Logger.getLogger(JmsConsumer.class);
 
     public void onMessage(Message message) {
+        logger.debug("message received");
         TextMessage textMessage = (TextMessage) message;
         try {
             if("updated".equals(textMessage.getText())){
+                logger.debug("call tariffService.updateTariffs() from jms consumer");
                 tariffService.updateTariffs();
             }
         } catch (JMSException e) {
-            e.printStackTrace();
+            logger.debug(e.getStackTrace());
         }
     }
 }

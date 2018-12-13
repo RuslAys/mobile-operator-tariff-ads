@@ -1,5 +1,6 @@
 package ru.javaschool.tariffads.controller;
 
+import org.apache.log4j.Logger;
 import ru.javaschool.tariffads.dto.TariffPlanDto;
 import ru.javaschool.tariffads.service.TariffService;
 
@@ -15,6 +16,9 @@ import java.util.List;
 @Named
 @SessionScoped
 public class TariffController implements Serializable {
+
+    Logger logger = Logger.getLogger(TariffController.class);
+
     @Inject
     private TariffService tariffService;
 
@@ -24,10 +28,12 @@ public class TariffController implements Serializable {
 
     @PostConstruct
     public void init(){
+        logger.debug("init tariffController");
         tariffService.addPropertyChangeListener(e -> tariffChanel.send("updateTariffs"));
     }
 
     public List<TariffPlanDto> getTariffs(){
+        logger.debug("call tariffController.getTariffs()");
         return tariffService.getAllTariffs();
     }
 }
